@@ -25,9 +25,7 @@ typedef pair<ll, ll> pp;
 typedef pair<ll, pp> ppp;
 typedef vector<pp > vpp;
 
-#ifdef LOCAL_TEST
-clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
-#endif
+// clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
@@ -35,20 +33,31 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
-int a[MAX];
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");//tm=clock();
     #endif
 
-    
 
-    #ifdef LOCAL_TEST
-    fin();
-    #endif
+    int q;cin>>q;
+    rep(i,q){
+      ll p,q,b;cin>>p>>q>>b;
+      ll g=gcd(p,q);p/=g,q/=g;
+      while(gcd(q,b)!=1){
+        ll gt=gcd(q,b);
+        while(q%gt==0)q/=gt;
+      }
+      if(q!=1)cout<<"Infinite\n";
+      else cout<<"Finite\n";
+    }
+
+
+
+
+
 
     return 0;
 }

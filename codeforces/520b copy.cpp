@@ -22,12 +22,9 @@ typedef long long int ll;
 typedef vector <ll> vll;
 typedef vector <int> vi;
 typedef pair<ll, ll> pp;
-typedef pair<ll, pp> ppp;
 typedef vector<pp > vpp;
 
-#ifdef LOCAL_TEST
-clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
-#endif
+// clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
@@ -35,20 +32,35 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
-int a[MAX];
+int vis[MAX];
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");//tm=clock();
     #endif
 
-    
+    ll n,m;cin>>n>>m;
+    priority_queue<pp > pq;
 
-    #ifdef LOCAL_TEST
-    fin();
-    #endif
+    pq.push(mp(0,n));
+    while(!pq.empty()){
+      pp cur=pq.top();pq.pop();
+      vis[cur.snd]=1;
+
+      if(cur.snd==m){
+        cout<<-cur.fst<<endl;
+        break;
+      }
+      else if(cur.snd>m) pq.push(mp(-cur.snd+m+cur.fst,m));
+      else{
+        if(2*cur.snd<MAX&&!vis[2*cur.snd])pq.push(mp(cur.fst-1,2*cur.snd));
+        if(cur.snd-1>0&&!vis[cur.snd-1])pq.push(mp(cur.fst-1,-1+cur.snd));
+      }
+    }
+
+
 
     return 0;
 }

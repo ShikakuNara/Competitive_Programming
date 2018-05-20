@@ -16,39 +16,62 @@ using namespace std;
 const long double PI = 3.141592653589793238462643383;
 #define fst first
 #define snd second
-#define endl '\n'
+// #define endl '\n'
 
 typedef long long int ll;
 typedef vector <ll> vll;
 typedef vector <int> vi;
 typedef pair<ll, ll> pp;
-typedef pair<ll, pp> ppp;
 typedef vector<pp > vpp;
 
-#ifdef LOCAL_TEST
-clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
-#endif
+// clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
-const int MAX = 200009;
+const int MAX = 100009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
-int a[MAX];
+int sol[300];
+int tot[300];
+
+bool comp(int i, int j){
+  return tot[i]>tot[j];
+}
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
+    // ifstream cin("in.txt");ofstream cout("out.txt");//tm=clock();
     #endif
 
-    
+    ll t;cin>>t;
+    rep(aa,t){
+      rep(i,200)tot[i]=0;
+      rep(i,200)sol[i]=0;
+      int n;cin>>n;
 
-    #ifdef LOCAL_TEST
-    fin();
-    #endif
 
+      rep(i,n){
+        int d;cin>>d;
+
+        if(d==0)cout<<-1<<endl;
+        else{
+          int v[200];
+          rep(i,d)cin>>v[i],tot[v[i]]++;
+          // sort(v,v+d,comp);
+
+          int ii=-1;
+          rep(i,d){
+            if(sol[v[i]])continue;
+            if(ii==-1)ii=v[i];
+            if(tot[ii]>tot[v[i]])ii=v[i];
+          }
+          cout<<ii<<endl;
+          if(ii!=-1)sol[ii]=1;
+        }
+      }
+    }
     return 0;
 }

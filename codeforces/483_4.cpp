@@ -16,7 +16,7 @@ using namespace std;
 const long double PI = 3.141592653589793238462643383;
 #define fst first
 #define snd second
-#define endl '\n'
+// #define endl '\n'
 
 typedef long long int ll;
 typedef vector <ll> vll;
@@ -28,6 +28,7 @@ typedef vector<pp > vpp;
 #ifdef LOCAL_TEST
 clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 #endif
+
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
@@ -35,7 +36,16 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
-int a[MAX];
+int n;
+ll a[5009];
+ll dp[5009][5009];
+ll f[5009][5009];
+
+ll solve(int d,int i){
+  if (dp[d][i]!=-1)return dp[d][i];
+  if(d==0)return dp[d][i]=a[i];
+  return dp[d][i]=solve(d-1,i)^solve(d-1,i+1);
+}
 
 int main()
 {
@@ -44,11 +54,27 @@ int main()
     ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
     #endif
 
-    
+    cin>>n;
+    rep(i,n)cin>>a[i];
+
+    fillA(dp);solve(n-1,0);
+
+    rep(i,n)rep(j,n-i){
+      if(i==0)f[j][j+i]=dp[i][j];
+      else f[j][j+i]=max(f[j+1][j+i],max(f[j][j+i-1],dp[i][j]));
+    }
+
+    int q;cin>>q;
+    rep(aa,q){
+      ll l,r;cin>>l>>r;
+      cout<<f[l-1][r-1]<<endl;
+    }
+
 
     #ifdef LOCAL_TEST
     fin();
     #endif
+
 
     return 0;
 }

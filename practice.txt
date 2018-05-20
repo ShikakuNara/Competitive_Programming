@@ -1,17 +1,17 @@
 0
 http://codeforces.com/problemset/problem/405/A
 
-1
+1 DONE
 http://codeforces.com/problemset/problem/520/B
 http://codeforces.com/problemset/problem/735/A
 http://codeforces.com/problemset/problem/378/C
 
-2
+2 DONE
 http://codeforces.com/problemset/problem/60/B
 http://codeforces.com/problemset/problem/20/C
 http://codeforces.com/problemset/problem/144/D
 
-3
+3 DONE
 http://codeforces.com/problemset/problem/320/B
 http://codeforces.com/problemset/problem/598/D
 http://codeforces.com/problemset/problem/296/D

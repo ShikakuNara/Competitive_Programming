@@ -22,12 +22,10 @@ typedef long long int ll;
 typedef vector <ll> vll;
 typedef vector <int> vi;
 typedef pair<ll, ll> pp;
-typedef pair<ll, pp> ppp;
+typedef pair<ll, pp > ppp;
 typedef vector<pp > vpp;
 
-#ifdef LOCAL_TEST
-clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
-#endif
+// clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
@@ -35,20 +33,56 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
-int a[MAX];
+ll vis[MAX],p[MAX];
+vpp adj[MAX];
+vi ans;
+int n,m,ff=0;
+void solve(){
+  ff=1;
+  int i=n-1;
+  while(i!=-1)ans.pb(i+1),i=p[i];
+  reverse(all(ans));
+  trav(it,ans)cout<<it<<' ';
+}
+
+priority_queue<ppp > pq;
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");//tm=clock();
     #endif
 
-    
+    rep(i,MAX)vis[i]=1e18;
 
-    #ifdef LOCAL_TEST
-    fin();
-    #endif
+    cin>>n>>m;
+    rep(i,m){
+      ll a,b,w;cin>>a>>b>>w;a--,b--;
+      adj[a].pb(mp(w,b));
+      adj[b].pb(mp(w,a));
+    }
+
+    pq.push(mp(0,mp(0,-1)));//w,s,p
+    vis[0]=0;
+
+    while(!pq.empty()){
+      ppp c=pq.top();pq.pop();
+      int i=c.snd.fst,pa=c.snd.snd;ll d=-c.fst;
+      if(vis[i]<d)continue;
+
+      p[i]=pa;
+      if(c.snd.fst==n-1){solve();break;}
+
+      rep(j,sz(adj[i])){
+        pp t=adj[i][j];int u=t.snd,w=t.fst;
+        if(vis[u]>d+w)pq.push(mp(-d-w,mp(u,i))),vis[u]=d+w;
+      }
+    }
+    if(!ff)cout<<-1<<endl;
+
+
+
 
     return 0;
 }

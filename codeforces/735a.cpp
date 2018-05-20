@@ -21,13 +21,10 @@ const long double PI = 3.141592653589793238462643383;
 typedef long long int ll;
 typedef vector <ll> vll;
 typedef vector <int> vi;
-typedef pair<ll, ll> pp;
-typedef pair<ll, pp> ppp;
+typedef pair<int, int> pp;
 typedef vector<pp > vpp;
 
-#ifdef LOCAL_TEST
-clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
-#endif
+// clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
@@ -35,20 +32,34 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
-int a[MAX];
+char a[MAX];
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");//tm=clock();
     #endif
 
-    
 
-    #ifdef LOCAL_TEST
-    fin();
-    #endif
+    int n,k;cin>>n>>k;
+    int pt,pg;
+    rep(i,n){
+      cin>>a[i];
+      if(a[i]=='T')pt=i;
+      if(a[i]=='G')pg=i;
+    }
+    if((pg-pt)%k==0){
+      int ff=1;
+      if(pg>pt)swap(pg,pt);
+      for(int i=pg;i!=pt;i+=k)if(a[i]=='#')ff=0;
+      if(ff)cout<<"YES\n";
+      else cout<<"NO\n";
+    }
+    else cout<<"NO\n";
+
+
+
 
     return 0;
 }

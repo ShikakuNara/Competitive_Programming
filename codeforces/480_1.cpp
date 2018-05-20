@@ -25,9 +25,7 @@ typedef pair<ll, ll> pp;
 typedef pair<ll, pp> ppp;
 typedef vector<pp > vpp;
 
-#ifdef LOCAL_TEST
-clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
-#endif
+// clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
@@ -35,20 +33,23 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
-int a[MAX];
-
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");//tm=clock();
     #endif
 
-    
+    string s;cin>>s;
+    int l=0,p=0;
+    rep(i,sz(s))if(s[i]=='-')l++; else p++;
+    if(p==0||l%p==0)cout<<"YES\n";
+    else cout<<"NO\n";
 
-    #ifdef LOCAL_TEST
-    fin();
-    #endif
+    if(l<p&&p%l==0)cout<<"YES";
+    else cout<<"NO";
+
+
 
     return 0;
 }

@@ -22,33 +22,52 @@ typedef long long int ll;
 typedef vector <ll> vll;
 typedef vector <int> vi;
 typedef pair<ll, ll> pp;
-typedef pair<ll, pp> ppp;
 typedef vector<pp > vpp;
 
-#ifdef LOCAL_TEST
-clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
-#endif
+// clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
-const int MAX = 200009;
+const int MAX = 100009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
-int a[MAX];
+ll dp[1000][8005];
+vll w;ll n;
+
+ll solve(ll i,ll rw){
+  if(i>=n||rw<=0){return 0;}
+  if(dp[i][rw]!=-1){return dp[i][rw];}
+
+  ll a1=solve(i+1,rw);
+  ll a2=0;
+  if(rw>=w[i])a2=1+solve(i+1,min(rw-w[i],6*w[i]));
+
+  return dp[i][rw]=max(a1,a2);
+}
+
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");//tm=clock();
     #endif
 
-    
+    ll t;cin>>t;
+    rep(aa,t){
+      w.clear();
+      rep(i,299)rep(j,8005)dp[i][j]=-1;
+      // fillA(dp);
 
-    #ifdef LOCAL_TEST
-    fin();
-    #endif
+      cin>>n;
+      rep(i,n){ll tmp;cin>>tmp;w.pb(tmp);}
+      reverse(all(w));
 
+      ll m=-1;
+      rep(i,n)m=max(m,1+solve(i+1,6*w[i]));
+
+      cout<<"Case #"<<aa+1<<": "<<m<<endl;
+    }
     return 0;
 }

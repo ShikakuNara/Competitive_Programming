@@ -25,9 +25,7 @@ typedef pair<ll, ll> pp;
 typedef pair<ll, pp> ppp;
 typedef vector<pp > vpp;
 
-#ifdef LOCAL_TEST
-clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
-#endif
+// clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
@@ -35,20 +33,60 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
-int a[MAX];
+ll a[509][509],b[509][509];
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");//tm=clock();
     #endif
 
-    
+    fill(a),fill(b);
 
-    #ifdef LOCAL_TEST
-    fin();
-    #endif
+    int n;cin>>n;
+    repA(i,1,n)repA(j,1,n)cin>>a[i][j];
+
+    vi tmp;
+    rep(i,n){int t;cin>>t;tmp.pb(t);}
+    repD(i,n-1,0)b[0][n-i]=tmp[i];
+
+    vll res;
+    repA(i,1,n){
+      int c=b[0][i];
+      b[c][c]=0;
+
+      repA(j,1,i-1){
+        ll m1=1e18,m2=1e18;
+        int u=b[0][j];
+
+        repA(k,1,i-1){
+          int v=b[0][k];
+          m1=min(m1,a[c][v]+b[k][j]);
+          m2=min(m2,a[v][c]+b[j][k]);
+        }
+
+        b[i][j]=m1;
+        b[j][i]=m2;
+      }
+
+      repA(j,1,i-1)repA(k,1,i-1){
+        b[j][k]=min(b[j][k],b[j][i]+b[i][k]);
+        b[k][j]=min(b[k][j],b[k][i]+b[i][j]);
+      }
+
+      ll ans=0;
+      repA(j,1,i)repA(k,1,i)ans+=b[j][k];
+      res.pb(ans);
+    }
+
+    reverse(all(res));
+    trav(it,res)cout<<it<<' ';
+
+
+
+
+
 
     return 0;
 }

@@ -25,9 +25,7 @@ typedef pair<ll, ll> pp;
 typedef pair<ll, pp> ppp;
 typedef vector<pp > vpp;
 
-#ifdef LOCAL_TEST
-clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
-#endif
+// clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
@@ -35,20 +33,53 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
-int a[MAX];
+int a[1000]={0},b[1000]={0},c[1000]={0};
+string s;ll n;
+
+int f(int x){
+  if(sz(s)-n>x)x+=n;
+  else if(x==sz(s)&&n==1)x=sz(s)-1;
+  else x=sz(s);
+  return x;
+}
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");//tm=clock();
     #endif
 
-    
+    cin>>n;
+    int x=-1,y=-1,z=-1;
 
-    #ifdef LOCAL_TEST
-    fin();
-    #endif
+    cin>>s;rep(i,sz(s))a[s[i]]++;
+    rep(i,1000)x=max(x,f(a[i]));
+
+    cin>>s;rep(i,sz(s))b[s[i]]++;
+    rep(i,1000)y=max(y,f(b[i]));
+
+    cin>>s;rep(i,sz(s))c[s[i]]++;
+    rep(i,1000)z=max(z,f(c[i]));
+
+    // cout<<x<<','<<y<<','<<z<<endl;
+
+    int ans=max(x,max(y,z)),cnt=0;
+    if(ans==x)cnt++;
+    if(ans==y)cnt++;
+    if(ans==z)cnt++;
+
+
+    if(cnt>1)cout<<"Draw\n";
+    else if(ans==x)cout<<"Kuro\n";
+    else if(ans==y)cout<<"Shiro\n";
+    else if(ans==z)cout<<"Katie\n";
+
+
+
+
+
+
 
     return 0;
 }

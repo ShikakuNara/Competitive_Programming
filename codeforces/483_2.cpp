@@ -25,9 +25,7 @@ typedef pair<ll, ll> pp;
 typedef pair<ll, pp> ppp;
 typedef vector<pp > vpp;
 
-#ifdef LOCAL_TEST
-clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
-#endif
+// clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
@@ -35,20 +33,52 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
-int a[MAX];
+int a[109][109];int n,m;
+int dx[]={-1,-1,-1,0,0,1,1,1};
+int dy[]={-1, 0, 1,-1,1,-1,0,1};
+
+bool check(int x,int y){
+  if(x<n&&x>=0&&y<m&&y>=0&&a[x][y]=='*')return true;
+  return false;
+}
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");//tm=clock();
     #endif
 
-    
 
-    #ifdef LOCAL_TEST
-    fin();
-    #endif
+    cin>>n>>m;
+    rep(i,n){
+      string s;cin>>s;
+      rep(j,m){
+        a[i][j]=s[j];
+        if(a[i][j]=='.')a[i][j]='0';
+      }
+    }
+
+    int ff=1;
+
+    rep(i,n)rep(j,m){
+      if(a[i][j]=='*')continue;
+      else{
+        int cnt=0;
+        // cout<<"ne\n";
+        // cout<<i<<','<<j<<"kk\n";
+        rep(k,8){
+          // cout<<i+dx[k]<<','<<j+dy[k]<<','<<(char)a[i+dx[k]][j+dy[k]]<<endl;
+          if(check(i+dx[k],j+dy[k]))cnt++;//cout<<i+dx[k]<<':'<<j+dy[k]<<endl;
+        }
+        if(a[i][j]!='0'+cnt)ff=0;//cout<<cnt<<':'<<(char)a[i][j]<<':'<<i<<','<<j<<endl;
+      }
+    }
+
+    if(ff)cout<<"YES\n";
+    else cout<<"NO\n";
+
+
 
     return 0;
 }

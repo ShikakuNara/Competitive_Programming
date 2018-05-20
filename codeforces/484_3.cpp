@@ -35,7 +35,20 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
-int a[MAX];
+vll adj[MAX];
+int vis[MAX];ll num[MAX];
+
+ll dfs(int i){
+  vis[i]=1;ll cnt=1;
+
+  rep(j,sz(adj[i])){
+    ll u=adj[i][j];
+    if(!vis[u])cnt+=dfs(u);
+  }
+
+  return num[i]=cnt;
+}
+
 
 int main()
 {
@@ -44,7 +57,29 @@ int main()
     ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
     #endif
 
-    
+
+    int n;cin>>n;
+    rep(i,n-1){
+      ll u,v;cin>>u>>v;u--,v--;
+      adj[u].pb(v),adj[v].pb(u);
+    }
+
+    if(n%2==1){cout<<-1;return 0;}
+
+    dfs(0);
+
+    // rep(i,n)cout<<num[i]<<' ';cout<<endl;
+
+    ll cnt=0;
+    rep(i,n)rep(j,sz(adj[i])){
+      ll u=adj[i][j];
+      if(min(num[i],num[u])%2==0)cnt++;//cout<<i<<','<<u<<endl;
+    }
+    // if(cnt==0)cout<<-1;
+    cout<<cnt/2<<endl;
+
+
+
 
     #ifdef LOCAL_TEST
     fin();

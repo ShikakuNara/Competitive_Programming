@@ -35,7 +35,9 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
-int a[MAX];
+map<ll, ll> mp;
+
+priority_queue<ll > pqmax,pqmin;
 
 int main()
 {
@@ -44,7 +46,21 @@ int main()
     ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
     #endif
 
-    
+
+    int n;cin>>n;
+    rep(i,n){
+      ll t;cin>>t;mp[t]=i;
+      pqmin.push(-t);
+    }
+
+    string s;cin>>s;
+    rep(i,2*n){
+      int t;t=s[i]-'0';
+      if(t==0)cout<<mp[-pqmin.top()]+1<<' ',pqmax.push(-pqmin.top()),pqmin.pop();
+      else cout<<mp[pqmax.top()]+1<<' ',pqmax.pop();
+    }
+
+
 
     #ifdef LOCAL_TEST
     fin();
