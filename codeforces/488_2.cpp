@@ -32,7 +32,7 @@ typedef pair<ll, pp> ppp;
 typedef vector<pp > vpp;
 
 #ifdef LOCAL_TEST
-clock_t time_p=clock();void fin(){time_p=clock()-time_p;cerr<<(float)(time_p)/CLOCKS_PER_SEC<<"\n";}
+clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 #endif
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
@@ -41,15 +41,36 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
+ll p[MAX],ans[MAX],c[MAX],t[MAX];
+pp s[MAX];
+map<ll,ll> mp;
+
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");time_p=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
     #endif
 
-    
+    int n,k;cin>>n>>k;
+    rep(i,n)cin>>p[i],mp[p[i]]=i;
+    rep(i,n)cin>>c[i],s[i]=mp(p[i],c[i]);
+    sort(s,s+n);
 
+    ll sum=0,m=1e18;
+
+    rep(i,n)ans[i]=s[i].snd;
+
+    priority_queue<ll > pq;
+
+    repA(i,1,n-1){
+      if(i<=k)sum+=s[i-1].snd,pq.push(-s[i-1].snd);
+      else if(!pq.empty()&&s[i-1].snd>-pq.top())sum+=s[i-1].snd+pq.top(),pq.pop(),pq.push(-s[i-1].snd);
+      ans[i]+=sum;
+    }
+
+    rep(i,n)t[mp[s[i].fst]]=ans[i];
+    rep(i,n)cout<<t[i]<<' ';
 
 
 

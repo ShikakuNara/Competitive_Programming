@@ -37,9 +37,17 @@ clock_t time_p=clock();void fin(){time_p=clock()-time_p;cerr<<(float)(time_p)/CL
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
-const int MAX = 200009;
+const int MAX = 400009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
+
+bool comp(ppp a,ppp b){
+  return a.snd.fst<b.snd.fst;
+}
+
+pp a[MAX];
+
+
 
 int main()
 {
@@ -48,7 +56,39 @@ int main()
     ifstream cin("in.txt");ofstream cout("out.txt");time_p=clock();
     #endif
 
-    
+    int t;cin>>t;
+    rep(i,t){
+      int n;cin>>n;
+      rep(i,n)cin>>a[i].fst>>a[i].snd;
+      rep(i,n)a[i].snd*=-1;
+      sort(a,a+n);
+      rep(i,n)a[i].snd*=-1;
+
+      priority_queue<int> take,ntake;
+      ll sum=0;int ans=0;
+      repD(i,n-1,0){
+        if(!take.empty()&&a[i].snd<=take.top()){
+          take.push(a[i].snd);
+          sum+=a[i].snd;
+        }
+        else ntake.push(-a[i].snd);
+
+        while(!take.empty()&&sz(take)*a[i].fst<sum){
+          int a=take.top();take.pop();
+          sum-=a;
+          ntake.push(-a);
+        }
+
+        while(!ntake.empty()&& (sz(take)+1)*a[i].fst>=sum-ntake.top() ){
+          int a=-ntake.top();ntake.pop();
+          take.push(a);
+          sum+=a;
+        }
+
+        ans=max(ans,sz(take));
+      }
+      cout<<ans<<'\n';
+    }
 
 
 

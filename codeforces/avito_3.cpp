@@ -1,13 +1,7 @@
 #include <bits/stdc++.h>
 // #pragma GCC optimize ("Ofast")
 // #pragma GCC target ("avx,avx2")
-// #include<ext/pb_ds/assoc_container.hpp>
-// #include<ext/pb_ds/tree_policy.hpp>
 
-// template <typename T>
-// using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-
-// using namespace __gnu_pbds;
 using namespace std;
 #define sz(a) (int)((a).size())
 #define pb push_back
@@ -32,7 +26,7 @@ typedef pair<ll, pp> ppp;
 typedef vector<pp > vpp;
 
 #ifdef LOCAL_TEST
-clock_t time_p=clock();void fin(){time_p=clock()-time_p;cerr<<(float)(time_p)/CLOCKS_PER_SEC<<"\n";}
+clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 #endif
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
@@ -41,15 +35,53 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
+
+vll adj[MAX];int vis[MAX];
+
+int dfs(int i){
+  vis[i]=1;
+  rep(j,sz(adj[i])){
+    int u=adj[i][j];
+    if(!vis[u])return dfs(u);
+  }
+  return i;
+}
+
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");time_p=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
     #endif
 
-    
+    int n;cin>>n;
+    rep(i,n-1){
+      int x,y;cin>>x>>y;x--,y--;
+      adj[x].pb(y);
+      adj[y].pb(x);
+    }
 
+    int an=-1,a2=-1;
+    rep(i,n){
+      if(sz(adj[i])>2&&an==-1)an=i;
+      else if(sz(adj[i])>2){cout<<"No\n";return 0;}
+      if(sz(adj[i])==2)a2=i;
+    }
+
+    int b=0;
+    if(an!=-1)b=an;
+    else if(a2!=-1)b=a2;
+
+    int cnt=0;vll ans;
+    vis[b]=1;
+    rep(i,sz(adj[b])){
+      int u=adj[b][i];
+      if(!vis[u])cnt++,ans.pb(dfs(u));
+    }
+
+    cout<<"Yes\n";
+    cout<<cnt<<endl;
+    trav(i,ans)cout<<b+1<<' '<<i+1<<endl;
 
 
 

@@ -34,7 +34,7 @@ typedef vector<pp > vpp;
 #ifdef LOCAL_TEST
 clock_t time_p=clock();void fin(){time_p=clock()-time_p;cerr<<(float)(time_p)/CLOCKS_PER_SEC<<"\n";}
 #endif
-ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
+ll gcd(ll a,ll b){return __gcd(a,b);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
 const int MAX = 200009;
@@ -48,7 +48,21 @@ int main()
     ifstream cin("in.txt");ofstream cout("out.txt");time_p=clock();
     #endif
 
-    
+    ll l,r,x,y;cin>>l>>r>>x>>y;
+
+    if(y%x!=0){cout<<0;return 0;}
+    if(x==y&&x>=l&&x<=r){cout<<1;return 0;}
+
+    y/=x;ll cnt=0;
+
+
+    ll i=(l+x-1)/x;
+    while(i*x<l)i++;
+
+    for( ;i*i<=y&&i*x<=r;i++)if(y%i==0){
+      if(gcd(i,y/i)==1&&(y/i)*x<=r&&(y/i)*x>=l&&i*x>=l&&i*x<=r)cnt+=2;
+    }
+    cout<<cnt<<endl;
 
 
 

@@ -1,13 +1,7 @@
 #include <bits/stdc++.h>
 // #pragma GCC optimize ("Ofast")
 // #pragma GCC target ("avx,avx2")
-// #include<ext/pb_ds/assoc_container.hpp>
-// #include<ext/pb_ds/tree_policy.hpp>
 
-// template <typename T>
-// using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-
-// using namespace __gnu_pbds;
 using namespace std;
 #define sz(a) (int)((a).size())
 #define pb push_back
@@ -32,24 +26,39 @@ typedef pair<ll, pp> ppp;
 typedef vector<pp > vpp;
 
 #ifdef LOCAL_TEST
-clock_t time_p=clock();void fin(){time_p=clock()-time_p;cerr<<(float)(time_p)/CLOCKS_PER_SEC<<"\n";}
+clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 #endif
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
-const int MAX = 200009;
+const int MAX = 3009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
+
+
+ll s[MAX],c[MAX],dp[MAX],dp2[MAX];
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");time_p=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
     #endif
 
-    
+    int n;cin>>n;
+    rep(i,n)cin>>s[i];
+    rep(i,n)cin>>c[i];
 
+    rep(i,n)dp[i]=1e15,dp2[i]=1e15;
+
+    repD(i,n-1,0)repA(j,i+1,n-1)if(s[i]<s[j])dp[i]=min(dp[i],c[j]);
+
+    repD(i,n-1,0)repA(j,i+1,n-1)if(s[i]<s[j]&&dp[i]!=1e15)dp2[i]=min(dp2[i],c[i]+c[j]+dp[j]);
+
+    ll ans=1e15;
+    rep(i,n)ans=min(ans,dp2[i]);
+    if(ans!=1e15)cout<<ans;
+    else cout<<-1;
 
 
 

@@ -41,6 +41,8 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
+ll a[MAX],skip[MAX];
+
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
@@ -48,7 +50,36 @@ int main()
     ifstream cin("in.txt");ofstream cout("out.txt");time_p=clock();
     #endif
 
-    
+    ll n,k;cin>>n>>k;
+    rep(i,n)cin>>a[i];
+
+    repA(i,0,n-2)if(a[i+1]==1){
+      int c=1,j=i;i++;
+      while(i<n&&a[i]==1)i++,c++;
+      skip[j]=c;
+      while(j<i)skip[j++]=--c;
+      i--;
+    }
+
+    ll ans=0;
+    rep(i,n){
+      ll sum=0,p=1;
+      repA(j,i,n-1){
+        if(p*a[j]>1e9)break;
+
+        sum+=a[j],p*=a[j];
+        if(p==k*sum)ans++;
+
+        if(skip[j]){
+          if(p%k==0&&p<=(sum+skip[j])*k&&p>sum*k)ans++;
+
+          sum+=skip[j];
+          j+=skip[j];
+        }
+      }
+    }
+
+    cout<<ans<<endl;
 
 
 

@@ -27,28 +27,61 @@ const long double PI = 3.141592653589793238462643383;
 typedef long long int ll;
 typedef vector <ll> vll;
 typedef vector <int> vi;
-typedef pair<ll, ll> pp;
+typedef pair<int, int> pp;
 typedef pair<ll, pp> ppp;
 typedef vector<pp > vpp;
 
 #ifdef LOCAL_TEST
-clock_t time_p=clock();void fin(){time_p=clock()-time_p;cerr<<(float)(time_p)/CLOCKS_PER_SEC<<"\n";}
+clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 #endif
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
-const int MAX = 200009;
+const int MAX = 2009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
+
+int uid[MAX],r[MAX];
+ll dp[MAX][MAX];
+map<ll,ll> uw;
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");time_p=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
     #endif
 
-    
+    fillA(r),fillA(uid);
+    rep(i,MAX)rep(j,MAX)dp[i][j]=1e18;
+
+    int a,n,m;cin>>a>>n>>m;
+    rep(i,n){
+      int x,y;cin>>x>>y;
+      repA(i,x,y)r[i]=1;
+      r[x]=-1;
+    }
+    rep(i,m){
+      int x,w;cin>>x>>w;
+      if(uid[x]==-1)uid[x]=i+1,uw[i+1]=w;
+      else if(uw[uid[x]]>w)uid[x]=i+1,uw[i+1]=w;
+    }
+    uw[0]=0;
+
+    if(r[0]==-1)dp[0][0]=0;
+    if(uid[0]!=-1)dp[0][uid[0]]=0;
+
+    repA(i,1,a){
+      repA(j,1,m)dp[i][j]=dp[i-1][j]+uw[j];
+      if(uid[i-1]!=-1)repA(j,0,m)dp[i][uid[i-1]]=min(dp[i][uid[i-1]],dp[i-1][j]+uw[uid[i-1]]);
+      if(r[i]==-1)repA(j,0,m)dp[i][0]=min(dp[i][0],dp[i-1][j]);
+    }
+
+    ll ans=1e18;
+    rep(j,m+1)ans=min(ans,dp[a][j]);
+    if(ans==1e18)ans=-1;
+    cout<<ans<<endl;
+
 
 
 

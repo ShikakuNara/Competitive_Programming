@@ -37,9 +37,45 @@ clock_t time_p=clock();void fin(){time_p=clock()-time_p;cerr<<(float)(time_p)/CL
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
-const int MAX = 200009;
+const int MAX = 400009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
+
+ll euclid(ll a, ll b, ll &x, ll &y) {
+		if (b) { ll d = euclid(b, a % b, y, x);
+					return y -= a/b * x, d; }
+			return x = 1, y = 0, a;
+}
+
+ll modI(ll a, ll m=MOD){
+    ll x,y;
+    ll g=euclid(a,m,x,y);
+    if (g!=1)cout<<"Inverse doesn't exist";
+    else{
+        ll res=(x%m+m)%m;
+        return res;
+    }
+    return -1;
+}
+
+vll f,invf;
+
+void pre(){
+  f.resize(MAX+4),invf.resize(MAX+4);
+  ll tmp=1;
+  f[0]=1,invf[0]=1;
+  repA(i,1,MAX-1)tmp=(tmp*i)%MOD,f[i]=tmp;
+
+  invf[MAX-1]=modI(f[MAX-1]);
+  repD(i,MAX-2,1)invf[i]=invf[i+1]*(i+1)%MOD;
+}
+
+ll C(ll n, ll r){
+  if(r<0||r>n) return 0;
+	return ((f[n]*invf[r])%MOD)*invf[n-r]%MOD;
+}
+
+pp a[MAX];
 
 int main()
 {
@@ -48,8 +84,26 @@ int main()
     ifstream cin("in.txt");ofstream cout("out.txt");time_p=clock();
     #endif
 
-    
+    pre();
 
+    int t;cin>>t;
+    rep(aa,t){
+      int n,k;cin>>n>>k;
+      rep(i,n)cin>>a[i].fst>>a[i].snd;
+      sort(a,a+n);
+
+      priority_queue<int > pq;
+
+      ll ans=0;
+      rep(i,n){
+        while(!pq.empty()&&-pq.top()<a[i].fst)pq.pop();
+        ans=(ans+C(sz(pq),k-1))%MOD;
+        pq.push(-a[i].snd);
+      }
+
+      ans=(C(n,k)-ans+MOD)%MOD;
+      cout<<ans<<'\n';
+    }
 
 
 

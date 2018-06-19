@@ -32,7 +32,7 @@ typedef pair<ll, pp> ppp;
 typedef vector<pp > vpp;
 
 #ifdef LOCAL_TEST
-clock_t time_p=clock();void fin(){time_p=clock()-time_p;cerr<<(float)(time_p)/CLOCKS_PER_SEC<<"\n";}
+clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 #endif
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
@@ -41,17 +41,43 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
+vi v1,v2,v3,v4;
+int n,l,w;
+
+ll solve(vi &v2, vi& v3){
+  if(v2.empty())return 0;
+
+  int i=0;
+  ll res=0;
+  trav(jt,v3){
+    while(i<sz(v2)&&1ll*(jt-v2[i]+l)*w>jt+v2[i]+l)i++;
+    res+=i;
+  }
+  return res;
+}
+
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");time_p=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
     #endif
 
-    
+    cin>>n>>l>>w;
+    rep(i,n){
+      int x,v;cin>>x>>v;
+      if(v==1&&x<0)v1.pb(-x-l);
+      else if(v==1&&x>=0)v2.pb(x);
+      else if(v==-1&&x>=0)v3.pb(x);
+      else v4.pb(-x-l);
+    }
 
+    sort(all(v1)),sort(all(v2)),sort(all(v3)),sort(all(v4));
 
-
+    ll ans=1ll*sz(v1)*sz(v3);
+    ans+=solve(v2,v3);
+    ans+=solve(v4,v1);
+    cout<<ans<<endl;
 
     #ifdef LOCAL_TEST
     fin();

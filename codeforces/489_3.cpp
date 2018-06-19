@@ -34,12 +34,19 @@ typedef vector<pp > vpp;
 #ifdef LOCAL_TEST
 clock_t time_p=clock();void fin(){time_p=clock()-time_p;cerr<<(float)(time_p)/CLOCKS_PER_SEC<<"\n";}
 #endif
-ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
+ll gcd(ll a,ll b){return __gcd(a,b);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
 
 const int MAX = 200009;
-const int MOD = 1e9+7;
+const ll MOD = 1e9+7;
 const int inf = 1e9+10;
+
+ll powe(ll x, ll y){
+  if(y==0)return 1;
+  ll tmp=powe(x,y/2);tmp=tmp*tmp%MOD;
+  if(y%2)return tmp*x%MOD;
+  return tmp;
+}
 
 int main()
 {
@@ -48,7 +55,12 @@ int main()
     ifstream cin("in.txt");ofstream cout("out.txt");time_p=clock();
     #endif
 
-    
+    ll x,k;cin>>x>>k;
+    if(x==0){cout<<0<<endl;return 0;}
+
+    x=x%MOD;if(x<0)x+=MOD;
+    ll ans= ((powe(2,k+1)*x)%MOD-powe(2,k)+1+MOD)%MOD;
+    cout<<ans<<endl;
 
 
 

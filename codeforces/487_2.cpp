@@ -32,7 +32,7 @@ typedef pair<ll, pp> ppp;
 typedef vector<pp > vpp;
 
 #ifdef LOCAL_TEST
-clock_t time_p=clock();void fin(){time_p=clock()-time_p;cerr<<(float)(time_p)/CLOCKS_PER_SEC<<"\n";}
+clock_t tm=clock();void fin(){tm=clock()-tm;cerr<<(float)(tm)/CLOCKS_PER_SEC<<"\n";}
 #endif
 ll gcd(ll a,ll b){if (a==0) return b;return gcd(b%a,a);}
 ll Ceil(ll a,ll b){if(a%b==0)return a/b;else return a/b+1;}
@@ -41,14 +41,45 @@ const int MAX = 200009;
 const int MOD = 1e9+7;
 const int inf = 1e9+10;
 
+string s;
+void Print(){
+  rep(i,sz(s))
+    if(s[i]!='.')cout<<s[i];
+    else cout<<"0";
+}
+
+char nott(char a){
+  if(a=='0')return '1';
+  else return '0';
+}
+
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     #ifdef LOCAL_TEST
-    ifstream cin("in.txt");ofstream cout("out.txt");time_p=clock();
+    ifstream cin("in.txt");ofstream cout("out.txt");tm=clock();
     #endif
 
-    
+    int n,p;cin>>n>>p;
+    cin>>s;
+
+    rep(i,sz(s)){
+      for(int j=i+p;j<sz(s);j+=p)
+        if(s[i]=='1'){
+          if(s[j]=='0'){Print();return 0;}
+          else if(s[j]=='.'){s[j]='0';Print();return 0;}
+        }
+        else if(s[i]=='0'){
+          if(s[j]=='1'){Print();return 0;}
+          else if(s[j]=='.'){s[j]='1';Print();return 0;}
+        }
+        else{
+          if(s[j]=='.'){s[i]='1',s[j]='0';Print();return 0;}
+          else if(s[j]=='1'){s[i]='0';Print();return 0;}
+          else if(s[j]=='0'){s[i]='1';Print();return 0;}
+        }
+    }
+    cout<<"No\n";
 
 
 
